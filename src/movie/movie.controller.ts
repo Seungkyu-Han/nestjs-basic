@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 
 interface Movie {
   id: number;
@@ -45,5 +45,17 @@ export class MovieController {
   @Get()
   getMovies(): Movie[] {
     return this.movies;
+  }
+
+  @Patch('/:id')
+  patchMovie(
+    @Param('id') id: string,
+    @Body() movieData: { title: string },
+  ): Movie | undefined {
+    const movie = this.movies.find((movie) => movie.id === parseInt(id));
+    if (movie) {
+      movie.title = movieData.title;
+    }
+    return movie;
   }
 }
