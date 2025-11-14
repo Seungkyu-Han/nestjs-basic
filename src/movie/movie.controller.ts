@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 
 interface Movie {
   id: number;
@@ -57,5 +65,15 @@ export class MovieController {
       movie.title = movieData.title;
     }
     return movie;
+  }
+
+  @Delete('/:id')
+  deleteMovie(@Param('id') id: string): { deleted: boolean } {
+    const index = this.movies.findIndex((movie) => movie.id === parseInt(id));
+    if (index !== -1) {
+      this.movies.splice(index, 1);
+      return { deleted: true };
+    }
+    return { deleted: false };
   }
 }
