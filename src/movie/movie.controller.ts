@@ -7,52 +7,24 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-
-interface Movie {
-  id: number;
-  title: string;
-}
+import { Movie, MovieService } from './movie.service';
 @Controller('movie')
 export class MovieController {
-  private movies: Movie[];
-
-  constructor() {
-    this.movies = [
-      {
-        id: 1,
-        title: 'Inception',
-      },
-      {
-        id: 2,
-        title: 'The Matrix',
-      },
-      {
-        id: 3,
-        title: 'Interstellar',
-      },
-    ];
-  }
-
-  private counter = 3;
+  constructor(private readonly movieService: MovieService) {}
 
   @Post()
   postMovie(@Body() movieData: { title: string }): Movie {
-    this.counter++;
-    const newMovie: Movie = {
-      id: this.counter,
-      title: movieData.title,
-    };
-    this.movies.push(newMovie);
-    return newMovie;
+    return this.movieService.createMovie(movieData.title);
   }
+
   @Get('/:id')
   getMovie(@Param('id') id: string): Movie | undefined {
-    return this.movies.find((movie) => movie.id === parseInt(id));
+    return this.movieService.getMovieById(parseInt(id));
   }
 
   @Get()
   getMovies(): Movie[] {
-    return this.movies;
+    return this.movieService.getMovies();
   }
 
   @Patch('/:id')
@@ -60,20 +32,11 @@ export class MovieController {
     @Param('id') id: string,
     @Body() movieData: { title: string },
   ): Movie | undefined {
-    const movie = this.movies.find((movie) => movie.id === parseInt(id));
-    if (movie) {
-      movie.title = movieData.title;
-    }
-    return movie;
+    return this.movieService.updateMovie(parseInt(id), movieData.title);
   }
 
   @Delete('/:id')
   deleteMovie(@Param('id') id: string): { deleted: boolean } {
-    const index = this.movies.findIndex((movie) => movie.id === parseInt(id));
-    if (index !== -1) {
-      this.movies.splice(index, 1);
-      return { deleted: true };
-    }
-    return { deleted: false };
+    return this.movieService.deleteMovie(parseInt(id));
   }
 }
