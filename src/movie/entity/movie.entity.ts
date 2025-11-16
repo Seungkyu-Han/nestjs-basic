@@ -1,5 +1,12 @@
 import { BaseEntity } from 'src/common/common-entity/base-entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { MovieDetail } from './movie-detail.entity';
 
 @Entity('movies')
 export class Movie extends BaseEntity {
@@ -11,4 +18,8 @@ export class Movie extends BaseEntity {
 
   @Column()
   genre: string;
+
+  @OneToOne(() => MovieDetail, (detail) => detail.movie)
+  @JoinColumn()
+  movieDetail: MovieDetail;
 }
