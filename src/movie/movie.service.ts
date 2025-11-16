@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 export interface Movie {
   id: number;
   title: string;
+  genre: string;
 }
 
 @Injectable()
@@ -16,14 +17,17 @@ export class MovieService {
       {
         id: 1,
         title: 'Inception',
+        genre: 'fantasy',
       },
       {
         id: 2,
         title: 'The Matrix',
+        genre: 'action',
       },
       {
         id: 3,
         title: 'Interstellar',
+        genre: 'sci-fi',
       },
     ];
   }
@@ -36,20 +40,22 @@ export class MovieService {
     return this.movies.find((movie) => movie.id === id);
   }
 
-  createMovie(title: string): Movie {
+  createMovie(title: string, genre: string): Movie {
     this.counter++;
     const newMovie: Movie = {
       id: this.counter,
       title: title,
+      genre: genre,
     };
     this.movies.push(newMovie);
     return newMovie;
   }
 
-  updateMovie(id: number, title: string): Movie | undefined {
+  updateMovie(id: number, title: string, genre: string): Movie | undefined {
     const movie = this.movies.find((movie) => movie.id === id);
     if (movie) {
       movie.title = title;
+      movie.genre = genre;
     }
     return movie;
   }
