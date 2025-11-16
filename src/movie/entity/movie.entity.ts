@@ -1,14 +1,8 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-  VersionColumn,
-} from 'typeorm';
+import { BaseEntity } from 'src/common/common-entity/base-entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('movies')
-export class Movie {
+export class Movie extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -17,13 +11,4 @@ export class Movie {
 
   @Column()
   genre: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @VersionColumn()
-  version: number;
 }

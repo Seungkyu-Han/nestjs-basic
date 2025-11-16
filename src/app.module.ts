@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import { DatabaseType } from 'typeorm';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -27,10 +28,13 @@ import { DatabaseType } from 'typeorm';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
+        synchronize: true,
+        autoLoadEntities: true,
       }),
       inject: [ConfigService],
     }),
     MovieModule,
+    CommonModule,
   ],
   controllers: [],
   providers: [],

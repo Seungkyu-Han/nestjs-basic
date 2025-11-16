@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MovieController } from './movie.controller';
 import { MovieService } from './movie.service';
+import { CommonEntityModule } from 'src/common/common-entity/common-entity.module';
 
 describe('MovieController', () => {
   let controller: MovieController;
@@ -11,7 +12,11 @@ describe('MovieController', () => {
       providers: [
         {
           provide: MovieService,
-          useValue: {}, // Mock the MovieService if needed
+          useValue: {},
+        },
+        {
+          provide: CommonEntityModule,
+          useValue: {},
         },
       ],
     }).compile();
