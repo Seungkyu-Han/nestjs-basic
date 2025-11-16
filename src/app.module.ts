@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MovieModule } from './movie/movie.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { DatabaseType } from 'typeorm';
 
 @Module({
@@ -28,7 +28,7 @@ import { DatabaseType } from 'typeorm';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
       }),
-      inject: [],
+      inject: [ConfigService],
     }),
     MovieModule,
   ],
