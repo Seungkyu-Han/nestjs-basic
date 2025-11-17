@@ -5,9 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Movie } from './entity/movie.entity';
 import { CommonEntityModule } from 'src/common/common-entity/common-entity.module';
 import { MovieDetail } from './entity/movie-detail.entity';
+import { Director } from 'src/director/entities/director.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Movie, MovieDetail]), CommonEntityModule],
+  imports: [
+    TypeOrmModule.forFeature([Movie, MovieDetail, Director]),
+    CommonEntityModule,
+  ],
   controllers: [MovieController],
   providers: [MovieService],
 })

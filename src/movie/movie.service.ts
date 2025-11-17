@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Movie } from './entity/movie.entity';
 import { Repository } from 'typeorm';
 import { MovieDetail } from './entity/movie-detail.entity';
+import { Director } from 'src/director/entities/director.entity';
 
 @Injectable()
 export class MovieService {
@@ -11,6 +12,8 @@ export class MovieService {
     private readonly movieRepository: Repository<Movie>,
     @InjectRepository(MovieDetail)
     private readonly movieDetailRepository: Repository<MovieDetail>,
+    @InjectRepository(Director)
+    private readonly directorRepository: Repository<Director>,
   ) {}
 
   getMovies() {
@@ -30,10 +33,23 @@ export class MovieService {
     return movie;
   }
 
-  async createMovie(title: string, genre: string) {
+  async createMovie(title: string, genre: string, directorId: number) {
+    const director = await this.directorRepository.findOne({
+      where: { id: directorId },
+    });
+
+    if (!director) {
+      throw new NotFoundException('Director not found');
+    }
+
     const movieDetail = this.movieDetailRepository.create({ title, genre });
 
-    const movie = this.movieRepository.create({ title, genre, movieDetail });
+    const movie = this.movieRepository.create({
+      title,
+      genre,
+      movieDetail,
+      director,
+    });
 
     return await this.movieRepository.save(movie);
   }

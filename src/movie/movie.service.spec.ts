@@ -3,6 +3,7 @@ import { MovieService } from './movie.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Movie } from './entity/movie.entity';
 import { MovieDetail } from './entity/movie-detail.entity';
+import { Director } from 'src/director/entities/director.entity';
 
 describe('MovieService', () => {
   let service: MovieService;
@@ -24,6 +25,14 @@ describe('MovieService', () => {
     create: jest.fn(),
   };
 
+  const mockDirectorRepository = {
+    find: jest.fn(),
+    findOne: jest.fn(),
+    save: jest.fn(),
+    delete: jest.fn(),
+    create: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -35,6 +44,10 @@ describe('MovieService', () => {
         {
           provide: getRepositoryToken(MovieDetail),
           useValue: mockMovieDetailRepository, // <-- Repository mock 주입
+        },
+        {
+          provide: getRepositoryToken(Director),
+          useValue: mockDirectorRepository, // <-- Repository mock 주입
         },
       ],
     }).compile();

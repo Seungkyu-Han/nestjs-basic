@@ -20,6 +20,7 @@ export class MovieController {
     return this.movieService.createMovie(
       createMovieDto.title,
       createMovieDto.genre,
+      createMovieDto.directorId,
     );
   }
 
