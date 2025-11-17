@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import { DatabaseType } from 'typeorm';
 import { CommonModule } from './common/common.module';
+import { DirectorModule } from './director/director.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { CommonModule } from './common/common.module';
     }),
     MovieModule,
     CommonModule,
+    DirectorModule,
   ],
   controllers: [],
   providers: [],
