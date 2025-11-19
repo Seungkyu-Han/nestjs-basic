@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -25,7 +26,7 @@ export class MovieController {
   }
 
   @Get('/:id')
-  getMovie(@Param('id') id: string) {
+  getMovie(@Param('id', ParseIntPipe) id: string) {
     return this.movieService.getMovieById(parseInt(id));
   }
 
@@ -34,12 +35,15 @@ export class MovieController {
     return this.movieService.getMovies();
   }
 
-  @Patch()
-  patchMovie(@Body() updateMovieDto: UpdateMovieDto) {
+  @Patch('/:id')
+  patchMovie(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateMovieDto: UpdateMovieDto,
+  ) {
     return this.movieService.updateMovie(
-      updateMovieDto.id,
-      updateMovieDto.title,
-      updateMovieDto.genre,
+      id,
+      updateMovieDto.title ?? '',
+      updateMovieDto.genre ?? '',
     );
   }
 
