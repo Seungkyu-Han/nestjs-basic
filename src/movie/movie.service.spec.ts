@@ -4,6 +4,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Movie } from './entity/movie.entity';
 import { MovieDetail } from './entity/movie-detail.entity';
 import { Director } from 'src/director/entities/director.entity';
+import { DataSource } from 'typeorm';
 
 describe('MovieService', () => {
   let service: MovieService;
@@ -33,6 +34,16 @@ describe('MovieService', () => {
     create: jest.fn(),
   };
 
+  const mockDataSource = {
+    createQueryRunner: jest.fn().mockReturnValue({
+      connect: jest.fn(),
+      startTransaction: jest.fn(),
+      commitTransaction: jest.fn(),
+      rollbackTransaction: jest.fn(),
+      release: jest.fn(),
+    }),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -48,6 +59,10 @@ describe('MovieService', () => {
         {
           provide: getRepositoryToken(Director),
           useValue: mockDirectorRepository, // <-- Repository mock 주입
+        },
+        {
+          provide: DataSource,
+          useValue: mockDataSource, // <-- Repository mock 주입
         },
       ],
     }).compile();
