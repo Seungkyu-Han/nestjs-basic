@@ -1,5 +1,7 @@
-import { Controller, Post, Headers } from '@nestjs/common';
+import { Controller, Post, Headers, UseGuards, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { User } from 'src/user/entities/user.entity';
+import { JwtAuthGuard } from './strategy/jwt.strategy';
 
 @Controller('auth')
 export class AuthController {
@@ -12,6 +14,12 @@ export class AuthController {
 
   @Post('/login')
   loginUser(@Headers('authorization') token: string) {
-    return this.authService.registerUser(token);
+    return this.authService.login(token);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/login/passport')
+  loginUserPassport(@Request() req: Request & { user: User }) {
+    return req.user;
   }
 }
