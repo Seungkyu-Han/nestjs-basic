@@ -6,6 +6,8 @@ import * as Joi from 'joi';
 import { DatabaseType } from 'typeorm';
 import { CommonModule } from './common/common.module';
 import { DirectorModule } from './director/director.module';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -37,6 +39,8 @@ import { DirectorModule } from './director/director.module';
     MovieModule,
     CommonModule,
     DirectorModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
